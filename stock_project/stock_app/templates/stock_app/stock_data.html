@@ -1,0 +1,42 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stock Data</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+<body>
+
+<h2>Stock Data</h2>
+
+<form id="stockForm" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <button type="submit">Submit</button>
+</form>
+
+<div id="stockData"></div>
+
+<script>
+    $(document).ready(function() {
+        $("#stockForm").submit(function(e) {
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: '{% url "stock_data" %}',
+                data: $('#stockForm').serialize(),
+                success: function(data) {
+                    if (data.status === 'success') {
+                        alert('Stock data downloaded successfully!');
+
+                        $('#stockData').html('<p>Stock data downloaded successfully!</p>');
+                    }
+                }
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
